@@ -15,13 +15,35 @@ use App\Http\Controllers\RestController;
 |
 */
 
-// ログイン認証ができている場合にのみ、打刻画面に入れる処理
+// 認証ができている場合にのみ、打刻画面に入れる
 Route::middleware('auth')->group(function () {
     Route::get('/', [AttendanceController::class, 'index']);
 });
 
+// メール確認の通知
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-Route::post('/attendance/add',[AttendanceController::class, 'create']);
-Route::post('/attendance/edit',[AttendanceController::class, 'update']);
-Route::post('/rest/add',[RestController::class, 'create']);
-Route::post('/rest/edit',[RestController::class, 'update']);
+// 送信された電子メールを確認リンクをクリックしたときに生成されるリクエスト
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// メール確認の再送信（確認メールの紛失・削除対策）
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+ 
+// メール認証したもののみ中に入れる仕組みとどう関係あるか
+// Route::get('/profile', function () {
+    // 確認済みのユーザーのみがこのルートにアクセス可能
+// })->middleware('verified');
+
+Route::post('/attendance/add',[AttendanceController::class, 'workBegin']);
+Route::post('/attendance/edit',[AttendanceController::class, 'workEnd']);
+Route::post('/rest/add',[RestController::class, 'restBegin']);
+Route::post('/rest/edit',[RestController::class, 'restEnd']);

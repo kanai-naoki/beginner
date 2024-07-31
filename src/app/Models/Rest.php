@@ -10,8 +10,8 @@ class Rest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'rest_begin',
-        'rest_after'
+        'rest_begin_time',
+        'rest_end_time'
     ];
 
     public function relation()

@@ -11,28 +11,24 @@ use App\Models\Rest;
 class RestController extends Controller
 {
     // 休憩時：休憩時刻のカラムのみを追加する
-    public function create(Request $request)
+    public function restBegin(Request $request)
     {
-        // 疑問：①時刻のデータのみを飛ばせているか、rest_afterが空の状態でもエラーが発生しないか
-        $form = $request->all();
-        unset($form['_token']);
+        Attendance::find($request->user_id, $request->date);
         $timestamp = [
-            'rest_begin' => new Carbon('now')
+            'rest_begin_time' => new Carbon('now')
         ];
-        Rest::create($form,$timestamp);
+        Rest::create($id,$timestamp);
         
         return redirect('/');
     }
 
     // 休憩終了時：終了時刻のカラムのみを追加する
-    public function update(Request $request)
+    public function restEnd(Request $request)
     {
-        $form = $request->all();
-        unset($form['_token']);
         $timestamp = [
-            'rest_after' => new Carbon('now')
+            'rest_end_time' => new Carbon('now')
         ];
-        Rest::find($request->attendance_id)->update($form,$timestamp);
+        Rest::find($request->attendance_id)->update($timestamp);
 
         return redirect('/');
     }

@@ -11,8 +11,8 @@ class Attendance extends Model
 
     protected $fillable = [
         'date', 
-        'attendance', 
-        'leaving'
+        'work_begin_time', 
+        'work_end_time'
     ];
 
     public function attendance_id()

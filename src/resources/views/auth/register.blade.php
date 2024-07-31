@@ -10,8 +10,7 @@
     <h2>会員登録</h2>
   </div>
   <div class="register_form_area">
-    {{-- actionのリンク先を考える --}}
-    <form class="form" action="/register" method="post">
+    <form class="form" action="{{ route('register') }}" method="post">
       @csrf
       <input class="form_name" type="text" name="name" placeholder="名前" value="{{ old('name') }}" >
       <input class="form_email" type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}" >
@@ -22,7 +21,7 @@
   </div>
   <div class="register_loginlink">
     <p>アカウントをお持ちの方はこちらから<br>
-      <a href="/login">ログイン</a>
+      <a href="{{ route('login') }}">ログイン</a>
     </p>
   </div>
 </div>

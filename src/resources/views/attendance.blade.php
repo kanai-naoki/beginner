@@ -14,8 +14,9 @@
       </form>
     </li>--}}
     <li class="header-nav-item">
-      <form class="form" action="/logout" method="post">
-        <button class="header-nav__button">ログアウト</button>
+      <form class="form" action="{{ route('logout') }}" method="post">
+      @csrf
+      <button type="submit">ログアウト</button>
     </li>    
   </ul>
 </nav>
@@ -39,10 +40,10 @@
       </tr>
       <tr class="search_result-table_row">
         <td class="search_table">{{$item->name}}</td>
-        <td class="search_table">{{$item->attendance}}</td> 
-        <td class="search_table">{{$item->leaving}}</td> 
-        {{-- <td class="search_table">{{$item->休憩時間の合計を表す変数}}</td> --}}
-        {{-- <td class="search_table">{{$item->勤務時間の合計を表す変数}}</td> --}}
+        <td class="search_table">{{$item->work_begin_time}}</td> 
+        <td class="search_table">{{$item->work_end_time}}</td> 
+        {{-- <td class="search_table">{{$item->休憩時間の合計を表す変数。全部の休憩時間を足す処理}}</td> --}}
+        {{-- <td class="search_table">{{$item->勤務時間の合計を表す変数。休憩時間の合計を勤務時間からの合計から引く処理}}</td> --}}
       </tr>
     </table>
     @endif    

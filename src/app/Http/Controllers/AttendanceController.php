@@ -16,30 +16,25 @@ class AttendanceController extends Controller
     }
 
     // 出勤時：日付・出勤時刻のカラムのみを追加する
-    public function create(Request $request)
-    {
-        $form = $request->all();
-        unset($form['_token']);
+    public function workBegin(Request $request)
+    {     
         $timestamp = [
+            'user_id' => Auth::id(),
             'date' => new Carbon('today'),
-            'atttendance' => new Carbon('now')
+            'work_begin_time' => new Carbon('now')
         ];
-        Attendance::create($form, $timestamp);
+        Attendance::create($timestamp);
         
-
         return redirect('/');
     }
 
     // 編集して、退勤時刻のカラムのみを追加する
-    public function update(Request $request)
-    {
-        // 疑問：①日付・時刻のデータのみを飛ばせているか、rest_afterが空の状態でもエラーが発生しないか
-        $form = $request->all();
-        unset($form['_token']);
+    public function workEnd(Request $request)
+    {        
         $timestamp = [
-            'leaving' => new Carbon('now')
+            'work_end_time' => new Carbon('now')
         ];
-        Attendance::find($request->user_id, $request->date)->update($form,$timestamp);
+        Attendance::find($request->user_id, $request->date)->update($timestamp);
 
         return redirect('/');
     }

@@ -17,8 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->date('date');
-            $table->time('attendance');
-            $table->time('leaving');
+            $table->time('work_begin_time');
+            $table->time('work_end_time')->nullable();
             $table->timestamps();
         });
     }
